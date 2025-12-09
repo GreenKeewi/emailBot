@@ -44,6 +44,7 @@ data/cities.csv
 data/businesses.csv
 data/sent_businesses.csv
 data/responses.csv
+data/summary_*.csv
 
 # Logs
 *.log
