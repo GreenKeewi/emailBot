@@ -1,0 +1,51 @@
+city,state,country,completed
+New York,New York,USA,false
+Los Angeles,California,USA,false
+Chicago,Illinois,USA,false
+Houston,Texas,USA,false
+Phoenix,Arizona,USA,false
+Philadelphia,Pennsylvania,USA,false
+San Antonio,Texas,USA,false
+San Diego,California,USA,false
+Dallas,Texas,USA,false
+San Jose,California,USA,false
+Austin,Texas,USA,false
+Jacksonville,Florida,USA,false
+Fort Worth,Texas,USA,false
+Columbus,Ohio,USA,false
+Charlotte,North Carolina,USA,false
+San Francisco,California,USA,false
+Indianapolis,Indiana,USA,false
+Seattle,Washington,USA,false
+Denver,Colorado,USA,false
+Boston,Massachusetts,USA,false
+Toronto,Ontario,Canada,false
+Montreal,Quebec,Canada,false
+Vancouver,British Columbia,Canada,false
+Calgary,Alberta,Canada,false
+Edmonton,Alberta,Canada,false
+Ottawa,Ontario,Canada,false
+Winnipeg,Manitoba,Canada,false
+Quebec City,Quebec,Canada,false
+Hamilton,Ontario,Canada,false
+Kitchener,Ontario,Canada,false
+Miami,Florida,USA,false
+Atlanta,Georgia,USA,false
+Las Vegas,Nevada,USA,false
+Portland,Oregon,USA,false
+Detroit,Michigan,USA,false
+Memphis,Tennessee,USA,false
+Nashville,Tennessee,USA,false
+Baltimore,Maryland,USA,false
+Milwaukee,Wisconsin,USA,false
+Albuquerque,New Mexico,USA,false
+Tucson,Arizona,USA,false
+Fresno,California,USA,false
+Sacramento,California,USA,false
+Kansas City,Missouri,USA,false
+Mesa,Arizona,USA,false
+Omaha,Nebraska,USA,false
+Raleigh,North Carolina,USA,false
+Long Beach,California,USA,false
+Virginia Beach,Virginia,USA,false
+Oakland,California,USA,false
