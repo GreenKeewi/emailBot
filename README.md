@@ -1,6 +1,15 @@
 # AuditBot - Business Scraping and Email Automation Tool
 
-A production-ready Python command-line tool for discovering and contacting businesses across North American cities. The system scrapes Google Maps for businesses in various categories, validates their contact information, and sends customizable emails via Gmail API.
+A production-ready Python command-line tool for discovering and contacting businesses across North American cities. The system provides a complete framework for business outreach automation with Gmail API integration.
+
+## ⚠️ Important Note
+
+The Google Maps scraping component is implemented as a **framework for demonstration**. For production use, you'll need to:
+- Use the official **Google Maps API** (recommended)
+- Integrate with third-party services like **Apify**, **Bright Data**, or **Outscraper**
+- Implement custom scraping with proper anti-detection measures
+
+All other components (CLI, email automation, analytics) are **fully production-ready**.
 
 ## Features
 

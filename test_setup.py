@@ -113,12 +113,13 @@ def setup_test_data():
     print("  - 3 businesses in the database")
     print("  - 3 sent emails")
     print("  - 1 completed city (New York)")
-    print("  - 1 logged response")
     print("\nYou can now run:")
     print("  python main.py --stats")
     print("  python main.py --city-stats")
     print("  python main.py --top-categories")
     print("  python main.py --export-summary")
+    print("\nTo log a response:")
+    print("  python main.py --log-response test@example.com --notes 'Interested'")
 
 if __name__ == '__main__':
     setup_test_data()

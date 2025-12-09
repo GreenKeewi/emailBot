@@ -112,23 +112,46 @@ class GoogleMapsScraper:
         state: str, 
         country: str
     ) -> List[Dict[str, str]]:
-        """Extract business information from the page."""
+        """
+        Extract business information from the page.
+        
+        NOTE: This is a framework implementation. Production use requires:
+        1. Advanced anti-detection measures (proxies, user-agent rotation)
+        2. CAPTCHA solving integration
+        3. Proper selectors for current Google Maps UI
+        4. Email extraction from websites
+        
+        Consider these production alternatives:
+        - Google Maps API (official, paid)
+        - Third-party services: Apify, Bright Data, Outscraper
+        - Custom implementation with proper anti-bot measures
+        
+        For demo/testing purposes, this returns empty list.
+        """
         businesses = []
         
         try:
-            # This is a simplified extraction - in production, you'd use more robust selectors
-            # For demonstration, we'll return mock data as Google Maps scraping requires
-            # more sophisticated anti-detection measures
+            logger.warning("="*60)
+            logger.warning("SCRAPER FRAMEWORK NOTICE")
+            logger.warning("="*60)
+            logger.warning("This is a framework implementation for demonstration.")
+            logger.warning("Actual Google Maps scraping requires:")
+            logger.warning("  1. Advanced anti-detection measures")
+            logger.warning("  2. CAPTCHA solving")
+            logger.warning("  3. Proxy rotation")
+            logger.warning("  4. Email extraction from websites")
+            logger.warning("")
+            logger.warning("Recommended production solutions:")
+            logger.warning("  - Google Maps API (official)")
+            logger.warning("  - Third-party services (Apify, Outscraper)")
+            logger.warning("  - Custom scraper with proper anti-bot measures")
+            logger.warning("="*60)
             
-            # In a real implementation, you would:
+            # Framework implementation would include:
             # 1. Click on each business listing
-            # 2. Extract name, phone, website from the detail panel
-            # 3. Use email finding services or website crawling to get emails
-            
-            # For now, returning empty list as this requires sophisticated scraping
-            # that would need proper anti-bot measures, which is beyond this scope
-            logger.warning("Note: Actual Google Maps scraping requires advanced anti-detection")
-            logger.warning("Consider using Google Maps API or third-party services")
+            # 2. Extract name, phone, website from detail panel
+            # 3. Use email finding services or website crawling
+            # 4. Return structured data
             
         except Exception as e:
             logger.error(f"Error extracting businesses: {e}")
