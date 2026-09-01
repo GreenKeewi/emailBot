@@ -113,7 +113,7 @@ class Scraper:
             # Get detailed place information
             details = self.gmaps.place(place_id, fields=[
                 'name', 'website', 'formatted_address', 'formatted_phone_number',
-                'geometry', 'types'
+                'geometry'
             ])
             
             result = details.get('result', {})
@@ -125,7 +125,7 @@ class Scraper:
                 'phone': result.get('formatted_phone_number'),
                 'latitude': result.get('geometry', {}).get('location', {}).get('lat'),
                 'longitude': result.get('geometry', {}).get('location', {}).get('lng'),
-                'types': result.get('types', [])
+                'types': place.get('types', [])
             }
             
             # Extract email from website if available

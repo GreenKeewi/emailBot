@@ -19,7 +19,7 @@ class AIWriter:
             api_key: Google Gemini API key
         """
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.0-flash')
     
     def generate_email(self, business: Dict, site_analysis: str = None, 
                       from_name: str = "Arc UI Team") -> Dict[str, str]:
@@ -58,34 +58,77 @@ class AIWriter:
         
         # Create prompt for Gemini
         prompt = f"""
-You are writing a personalized business outreach email for Arc UI, a web development service.
+You are a B2B outreach assistant for ArcUI (https://arc-ui.vercel.app).
+Your goal is to write a short, professional, high-conversion cold email to a local business owner.
 
-Business Details:
+Input data:
 - Business Name: {business_name}
-- City: {city}
+- Owner Name: {business.get('owner_name', 'Owner')}
 - Industry: {category}
-- Website: {website}
+- City / Province: {city}
+- Website URL: {website}
+- Visible website issues: {findings if findings else "General improvements needed"}
 
-{findings if findings else "I visited their website"}
+Instructions:
+Personalize the opening line using the business name or website
+Mention 1–2 realistic website problems if a site exists
+Position ArcUI as a done-for-you website service
+Emphasize:
+$99 flat monthly
+No setup fees
+Unlimited edits
+Cancel anytime
+Do NOT sound salesy or corporate
+Keep the email under 170 words
+End with an offer for a free homepage preview
+Use confident, calm language — not hype
+Always frame one-page or simple sites as a performance advantage, not a limitation
+Never say “we don’t do multi-page sites” directly
+Use phrases like focused, simple, fast, conversion-driven
+Create a curiosity-driven subject line (short, relevant)
+Keep bullet points tight and scannable
+Avoid repetition
 
-Write a professional, personalized cold email that:
-1. Addresses the business by name and mentions their city
-2. References what they do (their industry/service)
-3. If website observations are provided, briefly mention 1-2 specific observations (keep it subtle and helpful, not critical)
-4. Introduces Arc UI (https://arc-ui.vercel.app/) as a full-service web solution
-5. Highlights the offer: $99/month for website, hosting, updates, and maintenance - "we handle everything"
-6. Keeps a friendly, helpful tone (not salesy)
-7. Is concise (under 150 words)
-8. Ends with a soft call-to-action
-9. Includes an unsubscribe line at the bottom
+Reference this email template structure:
+Subject: Question about [Business Name]
 
-Format your response as:
-SUBJECT: [email subject line]
+Hi [Owner Name],
 
-BODY:
-[email body]
+I was looking at [Business Name] and noticed a few things on your website that might be costing you real leads—especially on mobile.
 
-Keep the email personalized but professional. Don't be too pushy.
+We see a common pattern with [Industry] sites:
+They look fine, but load slowly and hide the contact button, so visitors don't call.
+
+That’s why we built ArcUI.
+
+We design, host, and maintain high-converting business websites for a flat $99/month.
+No setup fees. No contracts. Unlimited edits.
+
+Why this works better than Wix or WordPress:
+• Instant load speeds (critical for mobile)
+• Layouts built to convert calls, not just look nice
+• We handle hosting, security, and updates
+• Cancel anytime — we earn your business monthly
+
+We recently helped a [Industry] business increase inbound leads by 40% with this approach.
+
+If you want, I can build you a free homepage preview so you can see exactly what your site could look like — no commitment.
+
+Worth a quick look?
+
+Best,
+Taha
+ArcUI
+https://arc-ui.vercel.app
+
+P.S. We’re only onboarding 5 new businesses this month to keep quality high.
+
+Output:
+Return ONLY the final email text including the Subject line.
+No explanations. No markdown.
+Format as:
+Subject: [Subject Text]
+[Body Text]
 """
         
         try:
@@ -93,15 +136,24 @@ Keep the email personalized but professional. Don't be too pushy.
             email_text = response.text
             
             # Parse the response
-            parts = email_text.split('BODY:', 1)
+            parts = email_text.split('\n', 1)
+            subject = "Website Upgrade"
+            body = email_text
             
-            if len(parts) == 2:
-                subject_part = parts[0].replace('SUBJECT:', '').strip()
-                body_part = parts[1].strip()
-            else:
-                # Fallback if format is different
-                subject_part = f"Website Solutions for {business_name}"
-                body_part = email_text
+            if email_text.lower().startswith('subject:'):
+                # Split into subject and body
+                lines = email_text.split('\n')
+                subject = lines[0].replace('Subject:', '').strip()
+                body = '\n'.join(lines[1:]).strip()
+            
+            return {'subject': subject, 'body': body}
+            
+        except Exception as e:
+            print(f"Error generating email: {e}")
+            return {
+                'subject': f"Question about {business_name}",
+                'body': f"Hi,\n\nI came across {business_name} and wanted to connect..."
+            }
             
             # Ensure unsubscribe line is present
             if 'unsubscribe' not in body_part.lower():

@@ -100,7 +100,13 @@ class Orchestrator:
                 stats['errors'] += city_stats['errors']
                 
                 # Update run
-                self.history.update_run(run_id, **{k: v for k, v in city_stats.items() if k != 'status'})
+                run_update_params = {
+                    'cities_processed': 1,
+                    'businesses_discovered': city_stats['businesses_found'],
+                    'emails_sent': city_stats['emails_sent'],
+                    'errors': city_stats['errors']
+                }
+                self.history.update_run(run_id, **run_update_params)
                 
                 # Check if we've hit the email limit
                 if limit and stats['emails_sent'] >= limit:
@@ -281,6 +287,62 @@ class Orchestrator:
         self.history.reset_province(province, category)
         print(f"✓ Reset complete for {province} - {category}")
     
+    def generate_preview(self, province: str, category: str) -> Optional[str]:
+        """
+        Generate a preview email for the first business found.
+        
+        Args:
+            province: Province name
+            category: Business category
+            
+        Returns:
+            Generated email text or None if no business found
+        """
+        print(f"Generating preview for {category} in {province}...")
+        
+        # Get a search location
+        locations = self.location_manager.get_all_search_locations(province, category)
+        if not locations:
+            print("No search locations found.")
+            return None
+            
+        location = locations[0]
+        
+        # Search for businesses
+        print(f"Searching in {location['city']}...")
+        businesses = self.scraper.search_businesses(
+            location['latitude'], 
+            location['longitude'], 
+            location['radius'], 
+            category, 
+            max_results=5 # Just get a few
+        )
+        
+        if not businesses:
+            print("No businesses found.")
+            return None
+            
+        business = businesses[0]
+        print(f"Found business: {business['name']}")
+        
+        # Analyze website if available
+        site_analysis = None
+        if business.get('website'):
+            print(f"Analyzing website: {business['website']}")
+            site_analysis = self.analyzer.analyze_website(
+                business['website'], 
+                business['name']
+            )
+            
+        # Generate email
+        print("Generating email...")
+        email_content = self.writer.generate_email(
+            {**business, 'city': location['city'], 'category': category},
+            site_analysis
+        )
+        
+        return f"Subject: {email_content['subject']}\n\n{email_content['body']}"
+
     def test_connection(self) -> bool:
         """Test all connections."""
         print("Testing connections...\n")

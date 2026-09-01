@@ -35,6 +35,11 @@ def main():
         action='store_true',
         help='Test connections without running the bot'
     )
+    parser.add_argument(
+        '--preview',
+        action='store_true',
+        help='Generate a preview email for the first business found without sending'
+    )
     
     args = parser.parse_args()
     
@@ -45,6 +50,16 @@ def main():
             print("Running connection tests...\n")
             success = orchestrator.test_connection()
             sys.exit(0 if success else 1)
+            
+        if args.preview:
+            preview = orchestrator.generate_preview(args.province, args.category)
+            if preview:
+                print("\n" + "="*60)
+                print("PREVIEW EMAIL")
+                print("="*60)
+                print(preview)
+                print("="*60 + "\n")
+            sys.exit(0)
         
         # Run the bot
         stats = orchestrator.run(
